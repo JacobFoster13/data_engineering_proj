@@ -14,12 +14,16 @@ default_args = {
 def stream_data():
     res = requests.get('https://randomuser.me/api/')
     data = res.json()['results'][0]
+    print(data)
 
 
 # create a DAG (Directed Acyclic Graph) that triggers tasks in sequential order
 # 
-with DAG('user_automation', default_args=default_args, schedule_interval='@daily', catchup=False) as dag:
+with DAG('user_automation', default_args=default_args, schedule='@daily', catchup=False) as dag:
     streamer = PythonOperator(
         task_id='api_stream',
         python_callable=stream_data
     )
+
+
+stream_data()
