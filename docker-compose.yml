@@ -85,7 +85,7 @@ services:
     depends_on:
       broker:
         condition: service_healthy
-      schema_registry:
+      schema-registry:
         condition: service_healthy
     ports:
       - "9021:9021"
