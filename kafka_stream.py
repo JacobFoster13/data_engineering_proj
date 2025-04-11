@@ -46,7 +46,6 @@ def stream_data():
 
 
 # create a DAG (Directed Acyclic Graph) that triggers tasks in sequential order
-# 
 with DAG('user_automation', default_args=default_args, schedule='@daily', catchup=False) as dag:
     streamer = PythonOperator(
         task_id='api_stream',
