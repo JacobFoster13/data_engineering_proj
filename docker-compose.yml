@@ -18,7 +18,7 @@ services:
 
 # Kafka Server
   broker:
-    image: confluentinc/cp-server:latest
+    image: confluentinc/cp-server:latest #7.4.0
     hostname: broker
     container_name: broker
     depends_on:

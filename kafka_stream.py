@@ -1,7 +1,9 @@
 import json
+import time
 import requests
 from airflow import DAG
 from datetime import datetime
+from kafka import KafkaProducer
 from airflow.operators.python import PythonOperator
 
 # default arguments to be passed to Airflow DAG
@@ -38,11 +40,15 @@ def format_data(res):
 
     return user_data
 
-
+# call functions to get and format data for kafka queue
 def stream_data():
     res = get_data()
-    res = format_data(res)    
-    print(res)
+    res = format_data(res)
+
+    # connect to producer with bootstrap server that is connected to broker at port 29092
+    producer = KafkaProducer(bootstrap_servers=['localhost:29092'], max_block_ms=5000)
+    # send data to Kafka Topic
+    producer.send('users_created', json.dumps(res).encode('utf-8'))
 
 
 # create a DAG (Directed Acyclic Graph) that triggers tasks in sequential order
